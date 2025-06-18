@@ -34,6 +34,10 @@ Una aplicación de línea de comandos (CLI) para gestionar tareas, construida en
    ```bash
    go mod download
    ```
+4. Instala las dependencias de node:
+   ```bash
+   npm i
+   ```
 
 ## Estructura de la Base de Datos
 
@@ -47,6 +51,48 @@ create table todos (
   create_at timestamp with time zone default timezone('utc'::text, now()) not null
 );
 ```
+
+### link project to supabase
+
+Initialize session on supabase :
+
+   ```bash
+   npx supabase login
+   ```
+
+For link project to Supabase run :
+   ```bash
+   npx supabase link --project-ref=you-project-id
+   ```
+
+Run the comamd for create schema on supabase:
+```bash
+   npx supabase db push
+```
+
+## Create migrations
+
+para crear una migración de tabla run:
+   ```bash
+   npx supabase migration new create_new_table
+   ```
+esto creara un archivo sql en `supabase/migrations/YYYYMMDDHHMMSS_create_new_table.sql`. Editelo para que coincida con la structura.ejemplo:
+   ```sql
+   -- Crear tabla todos
+CREATE TABLE IF NOT EXISTS todos (
+    id SERIAL PRIMARY KEY,
+    task TEXT NOT NULL,
+    is_complete BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Habilitar Row-Level Security (RLS)
+ALTER TABLE todos ENABLE ROW LEVEL SECURITY;
+
+-- Crear política para acceso autenticado
+CREATE POLICY "Permitir acceso autenticado" ON todos
+    FOR ALL TO authenticated USING (true);
+   ```
 
 ## Uso
 
