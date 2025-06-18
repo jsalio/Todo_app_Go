@@ -20,12 +20,7 @@ var addCmd = &cobra.Command{
 			IsComplete: false,
 			CreateAt:   time.Now(),
 		}
-		todoMap := map[string]interface{}{
-			"task":        newTodo.Task,
-			"is_complete": newTodo.IsComplete,
-			"created_at":  newTodo.CreateAt,
-		}
-		data, _, err := client.From("todos").Insert(todoMap, false, "*", "", "").Execute()
+		data, _, err := client.From("todos").Insert(newTodo, false, "*", "", "").Execute()
 		if err != nil {
 			fmt.Printf("Error al agregar tarea: %v\n", err)
 			return
