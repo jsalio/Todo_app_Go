@@ -4,17 +4,18 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/joho/godotenv"
-	"github.com/spf13/cobra"
-	"github.com/supabase-community/supabase-go"
 	"sample-todo-app/internal/application/usecases"
 	"sample-todo-app/internal/domain/ports"
 	supabaseRepo "sample-todo-app/internal/infrastructure/repository"
+
+	"github.com/joho/godotenv"
+	"github.com/spf13/cobra"
+	"github.com/supabase-community/supabase-go"
 )
 
 var (
-	supabaseURL string
-	supabaseKey string
+	supabaseURL  string
+	supabaseKey  string
 	todoUseCases ports.TodoUseCases
 )
 
@@ -57,12 +58,4 @@ func Execute() {
 		fmt.Println(err)
 		os.Exit(1)
 	}
-}
-
-func init() {
-	// Agregar comandos al rootCmd
-	rootCmd.AddCommand(addCmd)
-	rootCmd.AddCommand(listCmd)
-	rootCmd.AddCommand(updateCmd)
-	rootCmd.AddCommand(deleteCmd)
 }

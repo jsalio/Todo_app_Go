@@ -17,7 +17,11 @@ var addCmd = &cobra.Command{
 			fmt.Printf("Error al agregar tarea: %v\n", err)
 			return
 		}
-		fmt.Printf("Tarea agregada: ID: %d, Tarea: %s, Completada: %v\n", 
+		fmt.Printf("Tarea agregada: ID: %d, Tarea: %s, Completada: %v\n",
 			todo.ID, todo.Task, todo.IsComplete)
 	},
+}
+
+func init() {
+	rootCmd.AddCommand(addCmd)
 }

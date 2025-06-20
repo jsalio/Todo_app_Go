@@ -9,6 +9,8 @@ import (
 	"github.com/supabase-community/supabase-go"
 )
 
+const table string = "todos"
+
 type supabaseTodoRepository struct {
 	client *supabase.Client
 }
@@ -30,7 +32,7 @@ func (r *supabaseTodoRepository) Create(todo *models.Todo) (*models.Todo, error)
 	}
 
 	// Usamos Insert con el parámetro returning=representation para obtener el registro insertado
-	_, err := r.client.From("todos").
+	_, err := r.client.From(table).
 		Insert(insertData, false, "", "representation", "").
 		Single().
 		ExecuteTo(&result)
@@ -44,7 +46,7 @@ func (r *supabaseTodoRepository) Create(todo *models.Todo) (*models.Todo, error)
 func (r *supabaseTodoRepository) GetByID(id int) (*models.Todo, error) {
 	var todo models.Todo
 	// Usamos Select con eq para filtrar por ID
-	_, err := r.client.From("todos").Select("*", "exact", false).Eq("id", strconv.Itoa(id)).Single().ExecuteTo(&todo)
+	_, err := r.client.From(table).Select("*", "exact", false).Eq("id", strconv.Itoa(id)).Single().ExecuteTo(&todo)
 	if err != nil {
 		return nil, err
 	}
@@ -54,7 +56,7 @@ func (r *supabaseTodoRepository) GetByID(id int) (*models.Todo, error) {
 func (r *supabaseTodoRepository) GetAll() ([]models.Todo, error) {
 	var todos []models.Todo
 	// Obtenemos todos los registros
-	_, err := r.client.From("todos").Select("*", "exact", false).ExecuteTo(&todos)
+	_, err := r.client.From(table).Select("*", "exact", false).ExecuteTo(&todos)
 	if err != nil {
 		return nil, err
 	}
@@ -64,7 +66,7 @@ func (r *supabaseTodoRepository) GetAll() ([]models.Todo, error) {
 func (r *supabaseTodoRepository) Update(todo *models.Todo) (*models.Todo, error) {
 	var result models.Todo
 	// Usamos Update con el parámetro returning=representation para obtener el registro actualizado
-	_, err := r.client.From("todos").Update(todo, "", "").Eq("id", strconv.Itoa(todo.ID)).
+	_, err := r.client.From(table).Update(todo, "", "").Eq("id", strconv.Itoa(todo.ID)).
 		ExecuteTo(&result)
 	if err != nil {
 		return nil, err
@@ -74,6 +76,6 @@ func (r *supabaseTodoRepository) Update(todo *models.Todo) (*models.Todo, error)
 
 func (r *supabaseTodoRepository) Delete(id int) error {
 	// Usamos Delete para eliminar el registro
-	_, _, err := r.client.From("todos").Delete("", "").Eq("id", strconv.Itoa(id)).Execute()
+	_, _, err := r.client.From(table).Delete("", "").Eq("id", strconv.Itoa(id)).Execute()
 	return err
 }

@@ -36,3 +36,7 @@ var updateCmd = &cobra.Command{
 			todo.ID, todo.Task, todo.IsComplete)
 	},
 }
+
+func init() {
+	rootCmd.AddCommand(updateCmd)
+}

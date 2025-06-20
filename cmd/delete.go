@@ -26,3 +26,7 @@ var deleteCmd = &cobra.Command{
 		fmt.Println("Tarea eliminada con ID:", id)
 	},
 }
+
+func init() {
+	rootCmd.AddCommand(deleteCmd)
+}
