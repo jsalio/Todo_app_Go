@@ -128,6 +128,10 @@ Para crear un ejecutable del CLI:
 ```bash
 go build -o todo-cli
 ```
+Or compile and run 
+```bash
+go build -o todo-app && ./todo-app serve
+```
 
 Luego puedes usarlo así:
 
