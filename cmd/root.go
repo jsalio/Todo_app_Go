@@ -24,18 +24,9 @@ var rootCmd = &cobra.Command{
 	Use:   "todo-cli",
 	Short: "CLI para gestionar tareas con Supabase",
 	PersistentPreRun: func(cmd *cobra.Command, args []string) {
-		errEnv := godotenv.Load()
 
-		if errEnv != nil {
-			fmt.Printf("Error cargando archivo .env: %v\n", errEnv)
-			os.Exit(1)
-		}
-
-		supabaseURL = os.Getenv("SUPABASE_URL")
-		supabaseKey = os.Getenv("SUPABASE_KEY")
-
-		if supabaseURL == "" || supabaseKey == "" {
-			fmt.Println("Error: SUPABASE_URL o SUPABASE_KEY no están definidas en el archivo .env")
+		passRequirements := PassPrerequirements()
+		if !passRequirements {
 			os.Exit(1)
 		}
 
@@ -50,6 +41,24 @@ var rootCmd = &cobra.Command{
 		repo := supabaseRepo.NewSupabaseTodoRepository(client)
 		todoUseCases = usecases.NewTodoUseCases(repo)
 	},
+}
+
+func PassPrerequirements() bool {
+	errEnv := godotenv.Load()
+
+	if errEnv != nil {
+		fmt.Printf("Error cargando archivo .env: %v\n", errEnv)
+		return false
+	}
+
+	supabaseURL = os.Getenv("SUPABASE_URL")
+	supabaseKey = os.Getenv("SUPABASE_KEY")
+
+	if supabaseURL == "" || supabaseKey == "" {
+		fmt.Println("Error: SUPABASE_URL o SUPABASE_KEY no están definidas en el archivo .env")
+		return false
+	}
+	return true
 }
 
 // Execute ejecuta el comando raíz
