@@ -7,12 +7,15 @@ import (
 	"github.com/joho/godotenv"
 	"github.com/spf13/cobra"
 	"github.com/supabase-community/supabase-go"
+	"sample-todo-app/internal/application/usecases"
+	"sample-todo-app/internal/domain/ports"
+	supabaseRepo "sample-todo-app/internal/infrastructure/repository"
 )
 
 var (
 	supabaseURL string
 	supabaseKey string
-	client      *supabase.Client
+	todoUseCases ports.TodoUseCases
 )
 
 // rootCmd representa el comando base
@@ -36,12 +39,15 @@ var rootCmd = &cobra.Command{
 		}
 
 		// Inicializar cliente de Supabase
-		var err error
-		client, err = supabase.NewClient(supabaseURL, supabaseKey, nil)
+		client, err := supabase.NewClient(supabaseURL, supabaseKey, nil)
 		if err != nil {
 			fmt.Printf("Error al inicializar cliente de Supabase: %v\n", err)
 			os.Exit(1)
 		}
+
+		// Inicializar el repositorio y los casos de uso
+		repo := supabaseRepo.NewSupabaseTodoRepository(client)
+		todoUseCases = usecases.NewTodoUseCases(repo)
 	},
 }
 
