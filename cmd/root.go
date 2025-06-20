@@ -13,6 +13,9 @@ import (
 	"github.com/supabase-community/supabase-go"
 )
 
+// Las variables se han movido al nivel del paquete para que estén disponibles para otros comandos
+
+// Variables compartidas para los comandos
 var (
 	supabaseURL  string
 	supabaseKey  string

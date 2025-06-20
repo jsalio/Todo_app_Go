@@ -6,6 +6,7 @@
 *.dylib
 #output execute file for linux
 todo-cli
+todo-app
 
 /node_modules
 .env*
